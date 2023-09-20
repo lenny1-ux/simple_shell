@@ -7,14 +7,24 @@
 
 #define MAX_INPUT_SIZE 1024
 
-int main() {
-    char input[MAX_INPUT_SIZE];
-    char *args[MAX_INPUT_SIZE / 2 + 1]; 
-    char *token;
-    int status;
+/**
+  * main - Looping the terminal
+  *
+  *Return: 0 Always
+  *
+  */
 
-    while (1) 
+int main(void)
 {
+	char input[MAX_INPUT_SIZE];
+	char *args[MAX_INPUT_SIZE / 2 + 1];
+	char *token;
+	pid_t pid;
+	int arg_count;
+	int status;
+
+	while (1)
+	{
 	printf("$ ");
 	fflush(stdout);
 
@@ -24,7 +34,7 @@ int main() {
 		{
 			printf("\n");
 			break;
-		} else
+		}
 		{
 			perror("Input error");
 			exit(EXIT_FAILURE);
@@ -34,7 +44,8 @@ int main() {
 	input[strcspn(input, "\n")] = '\0';
 
 	token = strtok(input, " ");
-	int arg_count = 0;
+	arg_count = 0;
+
 	while (token != NULL)
 	{
 		args[arg_count] = token;
@@ -44,11 +55,11 @@ int main() {
 	args[arg_count] = NULL;
 
 	if (arg_count == 0)
-	{	
+	{
 		continue;
-        }
-	pid_t pid = fork();
+	}
 
+	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
@@ -67,14 +78,16 @@ int main() {
 		if (WIFEXITED(status))
 		{
 			int exit_status = WEXITSTATUS(status);
+
 			printf("Exiting status: %d\n", exit_status);
 		} else if (WIFSIGNALED(status))
 		{
 			int signal_number = WTERMSIG(status);
+
 			printf("signaltermination: %d\n", signal_number);
 		}
 	}
 	}
-	return 0;
+	return (0);
 }
 
