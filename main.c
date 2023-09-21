@@ -4,18 +4,16 @@
 
 /**
   * main - Looping the terminal
-  *
   *Return: 0 Always
-  *
   */
 
 int main(void)
 {
 	char input[MAX_INPUT_SIZE];
-	char *args[MAX_INPUT_SIZE / 2 + 1];
 	char *token;
-	pid_t pid;
 	int arg_count;
+	char *args[MAX_INPUT_SIZE / 2 + 1];
+	pid_t pid;
 	int status;
 
 	while (1)
@@ -31,13 +29,10 @@ int main(void)
 			break;
 		}
 		{
-			perror("Input error");
 			exit(EXIT_FAILURE);
 		}
 	}
-
 	input[strcspn(input, "\n")] = '\0';
-
 	token = strtok(input, " ");
 	arg_count = 0;
 
@@ -48,13 +43,13 @@ int main(void)
 		arg_count++;
 	}
 	args[arg_count] = NULL;
-
 	if (arg_count == 0)
 	{
 		continue;
 	}
 
 	pid = fork();
+
 	if (pid == -1)
 	{
 		perror("fork");
@@ -85,4 +80,3 @@ int main(void)
 	}
 	return (0);
 }
-
