@@ -1,22 +1,24 @@
 #include "shell.h"
 
 /**
- * main - to print the environment path
+ * envn - to print the environment path
+ * @env: to show path
  *
- * @ac: number of args
- * @av: the NULL args
+ *  number of args
+ *  the NULL args
  * Return: Always 0 if success
  */
 
-int envn( char **env)
+int envn(char **env)
 {
-    unsigned int a;
+	unsigned int a;
 
-    a = 0;
-    while (env[a] != NULL)
-    {
-        printf("%s\n", env[a]);
-        a++;
-    }
-    return (0);
+	a = 0;
+
+	while (env[a] != NULL)
+	{
+		printf("%s\n", env[a]);
+		a++;
+	}
+	return (0);
 }
