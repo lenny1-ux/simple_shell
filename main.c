@@ -1,82 +1,44 @@
 #include "shell.h"
 
-#define MAX_INPUT_SIZE 1024
-
 /**
-  * main - Looping the terminal
-  *Return: 0 Always
-  */
-
-int main(void)
+ * main - entry point
+ * @ac: arg count
+ * @av: arg vector
+ *
+ * Return: 0 on success, 1 on error
+ */
+int main(int ac, char **av)
 {
-	char input[MAX_INPUT_SIZE];
-	char *token;
-	int arg_count;
-	char *args[MAX_INPUT_SIZE / 2 + 1];
-	pid_t pid;
-	int status;
+	info_t info[] = { INFO_INIT };
+	int fd = 2;
 
-	while (1)
-	{
-	printf("$ ");
-	fflush(stdout);
+	asm ("mov %1, %0\n\t"
+		"add $3, %0"
+		: "=r" (fd)
+		: "r" (fd));
 
-	if (fgets(input, sizeof(input), stdin) == NULL)
+	if (ac == 2)
 	{
-		if (feof(stdin))
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			printf("\n");
-			break;
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
+			{
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
+			}
+			return (EXIT_FAILURE);
 		}
-		{
-			exit(EXIT_FAILURE);
-		}
+		info->readfd = fd;
 	}
-	input[strcspn(input, "\n")] = '\0';
-	token = strtok(input, " ");
-	arg_count = 0;
-
-	while (token != NULL)
-	{
-		args[arg_count] = token;
-		token = strtok(NULL, " ");
-		arg_count++;
-	}
-	args[arg_count] = NULL;
-	if (arg_count == 0)
-	{
-		continue;
-	}
-
-	pid = fork();
-
-	if (pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	} else if (pid == 0)
-	{
-		if (execvp(args[0], args) == -1)
-		{
-			perror("execvp");
-			exit(EXIT_FAILURE);
-		}
-	} else
-	{
-		wait(&status);
-
-		if (WIFEXITED(status))
-		{
-			int exit_status = WEXITSTATUS(status);
-
-			printf("Exiting status: %d\n", exit_status);
-		} else if (WIFSIGNALED(status))
-		{
-			int signal_number = WTERMSIG(status);
-
-			printf("signaltermination: %d\n", signal_number);
-		}
-	}
-	}
-	return (0);
+	populate_env_list(info);
+	read_history(info);
+	hsh(info, av);
+	return (EXIT_SUCCESS);
 }

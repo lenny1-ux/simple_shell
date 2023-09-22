@@ -1,74 +1,116 @@
 #include "shell.h"
 
 /**
- * execute_cd - to print commands
- *@args: to pass arguments
- *Return: current status
+ * _myhistory - show the list of history, each line cmd.
+ *
+ * @info: hold arguments. 
+ *
+ *  Return: 0 always
+ */
+int _myhistory(info_t *info)
+{
+	print_list(info->history);
+	return (0);
+}
+
+/**
+ * unset_alias - to set string alias 
+ * @info: def struct
+ * @str: alias of string
+ *
+ * Return: success o, 1 on error
+ */
+int unset_alias(info_t *info, char *str)
+{
+	char *p, c;
+	int ret;
+
+	p = _strchr(str, '=');
+	if (!p)
+		return (1);
+	c = *p;
+	*p = 0;
+	ret = delete_node_at_index(&(info->alias),
+		get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+	*p = c;
+	return (ret);
+}
+
+/**
+ * set_alias - set the  alias as string
+ * @info: struct parameter fetched
+ * @str: the set string alias name
+ *
+ * Return: 0 succes, 1 error
  */
 
-
-
-
-void execute_cd(char *args[])
+int set_alias(info_t *info, char *str)
 {
-	if (args[1] == NULL)
+	char *p;
+
+	p = _strchr(str, '=');
+	if (!p)
+		return (1);
+	if (!*++p)
+		return (unset_alias(info, str));
+
+	unset_alias(info, str);
+	return (add_node_end(&(info->alias), str, 0) == NULL);
+}
+
+/**
+ * print_alias - to print alias string name
+ * @node: the set alias nodes
+ *
+ * Return: 0, success, 1 error
+ */
+int print_alias(list_t *node)
+{
+	char *p = NULL, *a = NULL;
+
+	if (node)
 	{
-		fprintf(stderr, "cd: missing argument\n");
-	} else
+		p = _strchr(node->str, '=');
+		for (a = node->str; a <= p; a++)
+			_putchar(*a);
+		_putchar('\'');
+		_puts(p + 1);
+		_puts("'\n");
+		return (0);
+	}
+	return (1);
+}
+
+/**
+ * _myalias - to mimic  alias builtin names
+ * @info: args structures holders
+ * 
+ *  Return: Always 0 if successful
+ */
+int _myalias(info_t *info)
+{
+	int i = 0;
+	char *p = NULL;
+	list_t *node = NULL;
+
+	if (info->argc == 1)
 	{
-		if (chdir(args[1]) != 0)
+		node = info->alias;
+		while (node)
 		{
-			perror("cd");
+			print_alias(node);
+			node = node->next;
 		}
+		return (0);
 	}
-}
-
-/**
- * execute_exit - to escape shell
- *
- *Return: 0 passed
- *
- */
-
-void execute_exit(void)
-{
-
-	char *args[1];
-
-	if (strcmp(args[1], "exit") == 0)
+	for (i = 1; info->argv[i]; i++)
 	{
-		exit(0);
+		p = _strchr(info->argv[i], '=');
+		if (p)
+			set_alias(info, info->argv[i]);
+		else
+			print_alias(node_starts_with(info->alias, info->argv[i], '='));
 	}
+
+	return (0);
 }
-
-/**
- * execute_history - show previous history
- *
- * Return: 1 success
- */
-void execute_history(void)
-{
-	printf("No command history in this simple shell\n");
-}
-
-
-/**
- * execute_ls -  list files command
- * show all files
- *
- */
-void execute_ls(void)
-{
-	system("ls");
-}
-
-/**
- * execute - cmd execution
- * search all the PATH
- * @argv: arguments to be parsed
- *
- * @linkedlist_path: the form of path searched
- *
- * Return: 0 success, fail -1
- */
-
