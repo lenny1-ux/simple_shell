@@ -22,7 +22,7 @@ char **get_environ(info_t *info)
 /**
  * _unsetenv - the envn variable to remove
  * @info: argmnt structure container
- * 
+ *
  * Return: delete 1, 0 set
  * @var: envn variable in string formart
  *
@@ -55,7 +55,7 @@ int _unsetenv(info_t *info, char *var)
 
 /**
  * _setenv - to modify or init new envn var
- * 
+ *
  * @info: args structure container
  *
  * @var: evn variable in string format

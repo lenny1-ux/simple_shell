@@ -34,7 +34,7 @@ int _erratoi(char *s)
 /**
  * print_error - to print error msg
  * @info: struct parameter
- * @estr: strg holding error 
+ * @estr: strg holding error
  * Return: -1 error, 0 no number found in strg, numbers in the strg
  */
 
@@ -117,7 +117,7 @@ char *convert_number(long int num, int base, int flags)
 	*ptr = '\0';
 
 	do	{
- 		*--ptr = array[n % base];
+		*--ptr = array[n % base];
 		n /= base;
 	} while (n != 0);
 

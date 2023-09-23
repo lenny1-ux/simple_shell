@@ -3,7 +3,7 @@
 /**
  * _myenv - to print pwd
  * @info: args structure container
- * 
+ *
  * Return: 0 always
  */
 
@@ -58,7 +58,7 @@ int _mysetenv(info_t *info)
 /**
  * _myunsetenv - evn variable removed
  * @info: args structure container
- * 
+ *
  *  Return: 0 always
  */
 int _myunsetenv(info_t *info)

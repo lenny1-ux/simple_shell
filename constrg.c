@@ -73,7 +73,7 @@ void _puts(char *str)
  * @c: character printed
  *
  * Return: 0 IF SUCCESS, -1 ERROR & ERRNO IS SET.
- * 
+ *
  */
 
 int _putchar(char c)

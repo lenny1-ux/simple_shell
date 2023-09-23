@@ -5,7 +5,7 @@
  * @info: storage nodes to hold args
  *
  * stores  constant function prototype.
- * return: exit status specified by args 
+ * Return: exit status specified by args
  * (0) if info.argv[0] != "exit"
  */
 
@@ -13,7 +13,7 @@ int _myexit(info_t *info)
 {
 	int exitcheck;
 
-	if (info->argv[1]) 
+	if (info->argv[1])
 	{
 		exitcheck = _erratoi(info->argv[1]);
 		if (exitcheck == -1)
@@ -34,7 +34,7 @@ int _myexit(info_t *info)
 /**
  * _mycd - to change process directory running
  * @info: holds arguments
- * Used to maintain functn proto type 
+ * Used to maintain functn proto type
  * Return: 0 success
  */
 

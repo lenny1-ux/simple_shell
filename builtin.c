@@ -3,7 +3,7 @@
 /**
  * _myhistory - show the list of history, each line cmd.
  *
- * @info: hold arguments. 
+ * @info: hold arguments
  *
  *  Return: 0 always
  */
@@ -14,7 +14,7 @@ int _myhistory(info_t *info)
 }
 
 /**
- * unset_alias - to set string alias 
+ * unset_alias - to set string alias
  * @info: def struct
  * @str: alias of string
  *
@@ -84,7 +84,7 @@ int print_alias(list_t *node)
 /**
  * _myalias - to mimic  alias builtin names
  * @info: args structures holders
- * 
+ *
  *  Return: Always 0 if successful
  */
 int _myalias(info_t *info)
